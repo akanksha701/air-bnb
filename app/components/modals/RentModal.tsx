@@ -8,6 +8,7 @@ import CategoryInput from '../CategoryInput';
 import { FieldValues, useForm } from 'react-hook-form';
 import CountrySelect from '../inputs/CountrySelect';
 import dynamic from 'next/dynamic';
+import Counter from '../inputs/Counter';
 
 
 enum STEPS {
@@ -19,7 +20,7 @@ enum STEPS {
     PRICE = 5
 }
 const RentModal = () => {
-    const Map = useMemo(() => dynamic(() => import('../Map'), { 
+    const Map = useMemo(() => dynamic(() => import('../Map'), {
         ssr: false,
         loading: () => <div className="h-[35vh] rounded-lg bg-neutral-200" />
     }), []);
@@ -40,6 +41,9 @@ const RentModal = () => {
     });
     const category = watch('category');
     const location = watch('location');
+    const guestCount = watch('guestCount');
+    const roomCount = watch('roomCount');
+    const bathroomCount = watch('bathroomCount');
     const onBack = () => {
         setStep((value) => value - 1);
     }
@@ -58,52 +62,79 @@ const RentModal = () => {
         }
         return 'Back';
     }, [step]);
-const setCustomValue = (id:string,value:any)=>{
-    setValue(id,value,{
-        shouldDirty:true,
-        shouldTouch:true,
-        shouldValidate:true
-    })
-}
+    const setCustomValue = (id: string, value: any) => {
+        setValue(id, value, {
+            shouldDirty: true,
+            shouldTouch: true,
+            shouldValidate: true
+        })
+    }
 
     let bodyContent = (
         <>
-                <div className='flex flex-col gap-8'>
-            <Heading
-                title='Which of these best describes your place?'
-                subtitle='Pick a category'
-            />
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto'>
-                {categories.map((item)=>(
-                    <div key={item.label} className='col-span-1'>
-                        <CategoryInput
-                        icon={item.icon}
-                        label={item.label}
-                        onClick={(category)=>setCustomValue('category',category)}
-                        selected={category===item.label}
-                        />
-                    </div>
-                ))}
-            </div>
-        </div>
-       </>
-    )
-    if(step===STEPS.LOCATION)
-        {
-            bodyContent = (<>
             <div className='flex flex-col gap-8'>
                 <Heading
-                title='Where is your place located?'
-                subtitle='Help guests find you!'
-            />
-            <CountrySelect
-            value={location}
-            onChange={(value)=>setCustomValue('location',value)}
-            />
-             <Map center={location?.latlng} />
+                    title='Which of these best describes your place?'
+                    subtitle='Pick a category'
+                />
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto'>
+                    {categories.map((item) => (
+                        <div key={item.label} className='col-span-1'>
+                            <CategoryInput
+                                icon={item.icon}
+                                label={item.label}
+                                onClick={(category) => setCustomValue('category', category)}
+                                selected={category === item.label}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
-            </>)
-        }
+        </>
+    )
+    if (step === STEPS.LOCATION) {
+        bodyContent = (<>
+            <div className='flex flex-col gap-8'>
+                <Heading
+                    title='Where is your place located?'
+                    subtitle='Help guests find you!'
+                />
+                <CountrySelect
+                    value={location}
+                    onChange={(value) => setCustomValue('location', value)}
+                />
+                <Map center={location?.latlng} />
+            </div>
+        </>)
+    }
+    if (step === STEPS.INFO) {
+        bodyContent = (<div className='flex flex-col gap-8'>
+            <Heading
+                title='Share some basics about your place'
+                subtitle='What amenities do you have?'
+            />
+            <Counter
+                title='Number of guests'
+                subtitle='How many guests?'
+                value={guestCount}
+                onChange={(value) => setCustomValue('guestCount', value)}
+            />
+            <hr />
+            <Counter
+                title='Number of rooms'
+                subtitle='How many rooms?'
+                value={roomCount}
+                onChange={(value) => setCustomValue('roomCount', value)}
+            />
+            <hr />
+            <Counter
+                title='Number of bathrooms'
+                subtitle='How many bathrooms?'
+                value={bathroomCount}
+                onChange={(value) => setCustomValue('bathroomCount', value)}
+            />
+        </div>)
+    }
     const footerContent = (
         <div className='flex flex-col gap-2'>
             <hr />
