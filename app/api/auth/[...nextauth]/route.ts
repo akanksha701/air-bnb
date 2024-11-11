@@ -63,16 +63,11 @@ export const authOptions: AuthOptions = {
           });
 
           if (!existingUser) {
-            // Create new user if doesn't exist
-            const randomPassword = Math.random().toString(36).slice(-8);
-            const hashedPassword = await bcrypt.hash(randomPassword, 12);
             await prisma.user.create({
               data:<any> {
                 email: user.email,
                 name: user.name || profile.login,
                 image: user.image,
-                password: randomPassword,
-                hashedPassword: hashedPassword,
                 emailVerified: new Date(),
               },
             });
@@ -86,18 +81,22 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token, user }:any) {
       if (session?.user) {
-        session.user.id = token.sub as string;
+        session.user.id = token.id
       }
-      return session;
+      return session
     },
     async jwt({ token, user, account, profile }) {
       if (user) {
-        token.uid = user.id;
+        token.id = user.id
       }
-      return token;
+      if (account) {
+        token.accessToken = account.access_token
+      }
+      return token
     }
   },
   debug: process.env.NODE_ENV === "development",
+  
   session: {
     strategy: "jwt",
   },
