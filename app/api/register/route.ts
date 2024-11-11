@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     data:<any> {
       name,
       email,
-      password,
       hashedPassword,
     },
   });
