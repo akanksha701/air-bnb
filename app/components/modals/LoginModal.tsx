@@ -57,8 +57,10 @@ const LoginModal = () => {
     const footerContent = (
         <div className='flex flex-col gap-4 mt-3'>
             <hr />
-            <Buttons outline label='Continue with Google' Icon={FcGoogle} onClick={() => { }} />
-            <Buttons outline label='Continue with Github' Icon={AiFillGithub} onClick={() => { }} />
+            <Buttons outline label='Continue with Google' Icon={FcGoogle}  onClick={() => {
+          signIn("google");
+        }} />
+            <Buttons outline label='Continue with Github' Icon={AiFillGithub} onClick={() => { signIn("github")}} />
             <div className='text-neutral-500 text-center mt-4 font-light'>
                 <div className='justify-center flex flex-row items-center gap-2'>
                     <div>Already have an account?</div>
