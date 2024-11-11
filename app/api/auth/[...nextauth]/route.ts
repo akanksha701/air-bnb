@@ -55,22 +55,46 @@ export const authOptions: AuthOptions = {
     async signIn({ user, account, profile }:any) {
       try {
         if (account?.provider === "github" || account?.provider === "google") {
-          if (!user.email) return false;
+          if (!user?.email) {
+            console.error("No email provided from OAuth provider");
+            return false;
+          }
           
           // Check if user exists
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email },
           });
-
+  
           if (!existingUser) {
-            await prisma.user.create({
-              data:<any> {
+            // Ensure all required fields are present
+            if (!user.email || !account.providerAccountId) {
+              console.error("Missing required fields for user creation");
+              return false;
+            }
+  
+            const newUser = await prisma.user.create({
+              data: <any>{
                 email: user.email,
-                name: user.name || profile.login,
-                image: user.image,
+                name: user.name || profile?.login || user.email.split('@')[0],
+                image: user.image || null,
                 emailVerified: new Date(),
               },
             });
+            if (account.provider && account.type) {
+              await prisma.account.create({
+                data: {
+                  userId: newUser.id,
+                  type: account.type,
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                  access_token: account.access_token || null,
+                  token_type: account.token_type || null,
+                  scope: account.scope || null,
+                  id_token: account.id_token || null,
+                  expires_at: account.expires_at || null,
+                },
+              });
+            }
           }
         }
         return true;
@@ -78,12 +102,6 @@ export const authOptions: AuthOptions = {
         console.error("Sign in error:", error);
         return false;
       }
-    },
-    async session({ session, token, user }:any) {
-      if (session?.user) {
-        session.user.id = token.id
-      }
-      return session
     },
     async jwt({ token, user, account, profile }) {
       if (user) {
