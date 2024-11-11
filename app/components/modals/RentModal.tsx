@@ -8,10 +8,7 @@ import CategoryInput from '../CategoryInput';
 import { FieldValues, useForm } from 'react-hook-form';
 import CountrySelect from '../inputs/CountrySelect';
 import dynamic from 'next/dynamic';
-const Map = dynamic(() => import('../Map'), { 
-    ssr: false,
-    loading: () => <div className="h-[35vh] rounded-lg bg-neutral-200" />
-});
+
 
 enum STEPS {
     CATEGORY = 0,
@@ -22,6 +19,10 @@ enum STEPS {
     PRICE = 5
 }
 const RentModal = () => {
+    const Map = useMemo(() => dynamic(() => import('../Map'), { 
+        ssr: false,
+        loading: () => <div className="h-[35vh] rounded-lg bg-neutral-200" />
+    }), []);
     const rentModal = useRentModal();
     const [step, setStep] = useState(STEPS.CATEGORY);
     const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm<FieldValues>({
