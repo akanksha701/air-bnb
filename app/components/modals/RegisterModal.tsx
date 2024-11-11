@@ -30,10 +30,12 @@ const RegisterModal = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
+    console.log(data);
     axios
       .post("/api/register", data)
       .then(() => {
         toast.success("Account created successfully");
+        registerModal.onClose();
       })
       .catch((error) => {
         console.log(error);
