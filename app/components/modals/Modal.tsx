@@ -12,11 +12,11 @@ interface ModalProps {
     footer: React.ReactElement;
     actionLabel: string;
     disabled?: boolean;
-    secondaryLabel?: string;
+    secondaryActionLabel?: string;
     secondaryAction?: () => void;
 }
 const Modal = (props: ModalProps) => {
-    const { isOpen, onClose, onSubmit, title, body, footer, actionLabel, secondaryLabel, secondaryAction } = props;
+    const { isOpen, onClose, onSubmit, title, body, footer, actionLabel, secondaryActionLabel, secondaryAction } = props;
     if (!isOpen) {
         return null;
     }
@@ -40,9 +40,9 @@ const Modal = (props: ModalProps) => {
                             {/* footer */}
                             <div className='flex flex-col gap-2 p-6'>
                                     <div className='flex flex-row items-center gap-4 w-full'>
-                                        {secondaryLabel && secondaryAction && (
+                                        {secondaryActionLabel && secondaryAction && (
                                             <>
-                                                <Buttons outline label={secondaryLabel} onClick={secondaryAction} />
+                                                <Buttons outline label={secondaryActionLabel} onClick={secondaryAction} />
                                             </>
                                         )}
                                         <Buttons label={actionLabel} onClick={onSubmit} />
