@@ -8,6 +8,7 @@ import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import GlobalError from '@/app/global-error'
 import { User } from '@prisma/client'
 import { SafeUser } from '@/app/types'
+import Categories from './Categories'
 
 interface NavbarProps {
   currentUser?: SafeUser | null;
@@ -29,6 +30,7 @@ const Navbar = ({ currentUser }: NavbarProps) => {
           </div>
         </Container>
       </div>
+      <Categories />
     </div>
   )
 }
