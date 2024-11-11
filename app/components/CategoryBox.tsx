@@ -1,3 +1,4 @@
+'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
 import { IconType } from 'react-icons'
@@ -17,9 +18,9 @@ const CategoryBox = (props: CategoryBoxProps) => {
     const handleClick = () => {
         let currentQuery = {};
         if (params) {
-          currentQuery = qs.parse(params.toString());
+            currentQuery = qs.parse(params.toString());
         }
-    
+
         const updatedQuery: any = {
           ...currentQuery,
           category: label
