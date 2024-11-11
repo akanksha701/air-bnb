@@ -3,11 +3,19 @@ import React from 'react'
 import Logo from './Logo'
 import Container from '../Container'
 import Search from './Search'
-import Usermenu from './Usermenu'
+import UserMenu from './Usermenu'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import GlobalError from '@/app/global-error'
+import { User } from '@prisma/client'
+import { SafeUser } from '@/app/types'
 
-const Page = () => {
+interface NavbarProps {
+  currentUser?: SafeUser | null;
+}
+
+const Navbar = ({ currentUser }: NavbarProps) => {
+  console.log("Navbar currentUser:", currentUser);
+  
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>
       <div className='py-4 border-b-[1px]'>
@@ -15,10 +23,9 @@ const Page = () => {
           <div className='flex flex-row items-center justify-between gap-3 md:gap-0'>
             <Logo />
             <ErrorBoundary errorComponent={GlobalError}>
-            <Search />
+              <Search />
             </ErrorBoundary>
-           
-              <Usermenu />
+            <UserMenu currentUser={currentUser} />
           </div>
         </Container>
       </div>
@@ -26,4 +33,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default Navbar

@@ -7,7 +7,6 @@ const font = Nunito({
 export default function Home() {
   return (
    <>
-      <Navbar />
       <h1 className={font.className}>Hello World</h1>
     </>
   );
