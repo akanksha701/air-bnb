@@ -54,7 +54,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }:any) {
       try {
-        if (account?.provider === "github") {
+        if (account?.provider === "github" || account?.provider === "google") {
           if (!user.email) return false;
           
           // Check if user exists
