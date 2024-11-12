@@ -1,7 +1,7 @@
 'use client';
 import useCountries from '@/app/hooks/useCountries';
 import {  useRouter } from 'next/navigation';
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { format } from 'date-fns';
 import Image from 'next/image';
 import HeartButton from '../HeartButton';
@@ -17,7 +17,7 @@ interface ListingCardProps {
   actionId?: string;
 }
 
-const ListingCard = ({ data, currentUser, reservation, actionId = '', onAction, disabled, actionLabel }: ListingCardProps) => {
+const ListingCard = ({ data, currentUser, reservation, actionId='' , onAction, disabled, actionLabel }: ListingCardProps) => {
   const router = useRouter();
   const { getByValue } = useCountries();
   const location = getByValue(data.locationValue);
@@ -28,13 +28,13 @@ const ListingCard = ({ data, currentUser, reservation, actionId = '', onAction, 
     return data.price;
   }, [reservation, data.price]);
 
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCancel = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (disabled) {
       return;
     }
     onAction?.(actionId);
-  }
+  }, [disabled, onAction, actionId]);
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
@@ -45,8 +45,6 @@ const ListingCard = ({ data, currentUser, reservation, actionId = '', onAction, 
     return `${format(start, 'PP')} - ${format(end, 'PP')}`;
   }, [reservation]);
 
-  console.log('data', data)
-  console.log('reservation', reservation)
   return (
     <div
       onClick={() => router.push(`/listings/${data.id}`)}
@@ -89,7 +87,7 @@ const ListingCard = ({ data, currentUser, reservation, actionId = '', onAction, 
           disabled={disabled}
           small
           label={actionLabel}
-          onClick={() => { }}
+          onClick={handleCancel}
         />
       )}
     </div>
