@@ -1,0 +1,61 @@
+'use client';
+import React, { useCallback, useState } from 'react'
+import { SafeReservation, SafeUser } from '../types';
+import Heading from '../components/navbar/Heading';
+import Container from '../components/Container';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import ListingCard from '../components/listings/ListingCard';
+
+interface TripsClientProps {
+    currentUser?: SafeUser | null;
+    reservations: SafeReservation[];
+}
+
+const TripsClient = ({ reservations, currentUser }: TripsClientProps) => {
+const router = useRouter();
+const [deletingId, setDeletingId] = useState('');
+
+const onCancel = useCallback((id: string) => {
+    setDeletingId(id);
+    axios.delete(`/api/reservations/${id}`)
+    .then(()=>{
+        toast.success('Reservation cancelled');
+        router.refresh();
+    })
+    .catch((error)=>{
+        toast.error(error?.response?.data?.message);
+    })
+    .finally(()=>{
+        setDeletingId('');
+    })
+}, [router]);
+console.log('reservations', reservations)
+  return (
+  <Container >
+    <div className='flex flex-col gap-4'>
+        <Heading
+            title='Trips'
+            subtitle='Where youve been and where you are going'
+        />
+        <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
+            {reservations.map((reservation:any)=>(
+              <ListingCard
+                key={reservation.id}
+                data={reservation.listing}
+                reservation={reservation}
+                actionId={reservation.id}
+                onAction={onCancel}
+                disabled={deletingId === reservation.id}
+                actionLabel='Cancel reservation'
+                currentUser={currentUser}
+              />
+            ))}
+        </div>
+    </div>
+  </Container>
+  )
+}
+
+export default TripsClient

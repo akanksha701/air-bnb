@@ -1,13 +1,34 @@
 import { Nunito } from "next/font/google";
-import Navbar from "./components/navbar/Navbar";
+import Container from "./components/Container";
+import EmptyState from "./components/navbar/EmptyState";
+import getListings from "./actions/getListings";
+import ListingCard from "./components/listings/ListingCard";
+import getCurrentUser from "./actions/getCurrentUser";
+import { SafeListing } from "./types";
 const font = Nunito({
   subsets: ["latin"],
 });
 
-export default function Home() {
+export default async function Home() {
+  const listings = await getListings();
+  const currentUser = await getCurrentUser();
+
+  if (listings.length === 0) {
+    return <EmptyState showReset />;
+  }
   return (
-   <>
-      <h1 className={font.className}>Hello World</h1>
+    <>
+      <Container>
+        <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {listings.map((listing) => {
+            return <ListingCard
+              key={listing.id}
+              data={listing}
+              currentUser={currentUser}
+            />
+          })}
+        </div>
+      </Container>
     </>
   );
 }

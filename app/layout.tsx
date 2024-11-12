@@ -9,6 +9,7 @@ import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import Navbar from "./components/navbar/Navbar";
 import RentModal from "./components/modals/RentModal";
+import Categories from "./components/navbar/Categories";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff", 
@@ -40,8 +41,9 @@ export default async function RootLayout({
         <RentModal />
         <ToasterProvider />
         <Navbar currentUser={currentUser} />
+         {/* <Categories /> */}
+        <div className="pb-20 pt-28">{children}</div>
         {/* <ErrorBoundary errorComponent={GlobalError}> */}
-          {children}
         {/* </ErrorBoundary> */}
       </body>
     </html>

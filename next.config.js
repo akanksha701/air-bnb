@@ -14,6 +14,30 @@ const nextConfig = {
             ...config.experiments,
             topLevelAwait: true,
         }
+        
+        // Add both ignore-loader and explicit exclusion
+        config.module.rules.push({
+            test: /\.html$/,
+            use: 'ignore-loader',
+            exclude: /node_modules/
+        });
+
+        // Add specific exclusion for mapbox files
+        config.module.rules.push({
+            test: /node-pre-gyp/,
+            use: 'ignore-loader'
+        });
+        
+        // Add resolve fallback
+        config.resolve = {
+            ...config.resolve,
+            fallback: {
+                ...config.resolve.fallback,
+                fs: false,
+                path: false,
+            }
+        }
+        
         return config
     },
     // Add this to ensure proper chunk loading

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Container from '../Container'
 import { TbBeach, TbBuildingSkyscraper, TbMountain, TbPool, TbWindmill } from 'react-icons/tb'
@@ -95,9 +96,10 @@ const Categories = () => {
     const category = params?.get('category');
     const isMainPage = pathname === '/';
 
-    // if (!isMainPage) {
-    //     return null;
-    // }
+    if (!isMainPage) {
+        return null;
+    }
+    
   return (
     <Container>
       <div className='pt-4 flex flex-row items-center justify-between overflow-x-auto'>
