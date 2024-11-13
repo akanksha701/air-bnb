@@ -1,5 +1,5 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
-import getListById from '@/app/actions/getListById';
+import { getListById } from '@/app/actions/getListById';
 import EmptyState from '@/app/components/navbar/EmptyState';
 import React from 'react'
 import ListingClient from './ListingClient';
