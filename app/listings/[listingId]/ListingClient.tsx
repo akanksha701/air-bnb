@@ -25,18 +25,20 @@ interface ListingClientProps {
     reservations?: SafeReservation[];
 }
 
-const ListingClient = ({ listing, currentUser, reservations = [] }: ListingClientProps) => {
+const ListingClient = ({ listing, currentUser, reservations }: ListingClientProps) => {
     const loginModal = useLoginModal();
     const router = useRouter();
     const disabledDates = useMemo(() => {
         let dates: Date[] = [];
         reservations?.forEach((reservation: any) => {
+            console.log(reservation,"reservation")
             const range = eachDayOfInterval({
                 start: startOfDay(reservation.startDate),
                 end: endOfDay(reservation.endDate),
             });
             dates = [...dates, ...range];
         });
+        console.log(dates,"dates")
         return dates;
     }, [reservations]);
     const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +78,7 @@ const ListingClient = ({ listing, currentUser, reservations = [] }: ListingClien
         return categories.find((item) => item.label === listing.category);
     }, [listing.category]);
 
-
+console.log(disabledDates,"listing")
     return (
         <Container>
                 <div className='max-w-screen-lg mx-auto'>
