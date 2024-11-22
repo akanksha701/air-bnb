@@ -155,40 +155,40 @@ const RentModal = () => {
         bodyContent = (<><div className='flex flex-col gap-8'>
             <Heading title='How would you describe your place?' subtitle='Short and sweet works best!' />
         </div>
-        <Input  
-        id='title'
-         disabled={isLoading} 
-         register={register} 
-         errors={errors} 
-         required 
-         label='Title' />
+            <Input
+                id='title'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+                label='Title' />
 
-         <hr />
-       
-         <Input 
-         id='description'
-         disabled={isLoading} 
-         register={register} 
-         errors={errors} 
-         required 
-         label='Description' />
-         </>
+            <hr />
+
+            <Input
+                id='description'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+                label='Description' />
+        </>
         )
     }
     if (step === STEPS.PRICE) {
         bodyContent = (<div className='flex flex-col gap-8'>
-            <Heading 
-            title='Now, set your price'
-            subtitle='How much do you charge per night?' />
-            <Input 
-            id='price'
-            disabled={isLoading} 
-            register={register} 
-            errors={errors} 
-            required 
-            label='Price'
-            formatPrice
-            type='number'
+            <Heading
+                title='Now, set your price'
+                subtitle='How much do you charge per night?' />
+            <Input
+                id='price'
+                disabled={isLoading}
+                register={register}
+                errors={errors}
+                required
+                label='Price'
+                formatPrice
+                type='number'
             />
         </div>)
     }
@@ -199,19 +199,19 @@ const RentModal = () => {
         }
         setIsLoading(true);
         axios.post('/api/listings', data)
-        .then(() => {
-            toast.success('Listing created successfully');
-            router.refresh();
-            reset();
-            setStep(STEPS.CATEGORY);
-            rentModal.onClose();
-        })
-        .catch((error) => {
-            toast.error('Something went wrong');
-        })
-        .finally(() => {
-            setIsLoading(false);
-        })
+            .then(() => {
+                toast.success('Listing created successfully');
+                router.refresh();
+                reset();
+                setStep(STEPS.CATEGORY);
+                rentModal.onClose();
+            })
+            .catch((error) => {
+                toast.error('Something went wrong');
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
     const footerContent = (
         <div className='flex flex-col gap-2'>

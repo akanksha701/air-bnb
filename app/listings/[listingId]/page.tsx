@@ -3,7 +3,6 @@ import { getListById } from '@/app/actions/getListById';
 import EmptyState from '@/app/components/navbar/EmptyState';
 import React from 'react'
 import ListingClient from './ListingClient';
-import { SafeListing, SafeUser } from "@/app/types";
 import { getReservations } from '@/app/actions/getReservations';
 
 interface IParams {

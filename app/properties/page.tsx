@@ -2,8 +2,6 @@
 
 import React from 'react'
 import Container from '../components/Container';
-import Heading from '../components/navbar/Heading';
-import ListingCard from '../components/listings/ListingCard';
 import getCurrentUser from '../actions/getCurrentUser';
 import getListings from '../actions/getListings';
 import EmptyState from '../components/navbar/EmptyState';

@@ -39,7 +39,7 @@ const onCancel = useCallback((id: string) => {
             subtitle='Where youve been and where you are going'
         />
         <div className='mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8'>
-            {reservations.map((reservation:any)=>(
+            {reservations.map((reservation)=>(
               <ListingCard
                 key={reservation.id}
                 data={reservation.listing}

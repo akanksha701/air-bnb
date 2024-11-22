@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useState } from 'react'
-import { SafeListing, SafeReservation, SafeUser } from '../types';
+import { SafeListing, SafeUser } from '../types';
 import Heading from '../components/navbar/Heading';
 import Container from '../components/Container';
 import { useRouter } from 'next/navigation';

@@ -1,4 +1,3 @@
-import { Nunito } from "next/font/google";
 import Container from "./components/Container";
 import EmptyState from "./components/navbar/EmptyState";
 import getListings from "./actions/getListings";

@@ -23,7 +23,7 @@ const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
     <>
       <CldUploadWidget
         onSuccess={(result) => handleUpload(result)}
-        uploadPreset="sifm77pu"
+        uploadPreset="upload_images"
         options={{
           maxFiles: 1,
         }}
