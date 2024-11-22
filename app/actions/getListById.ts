@@ -23,7 +23,7 @@ export async function getListById(params: IParams) {
 
         return listing;
 
-    } catch (error: any) {
-        throw new Error(error.message);
+    } catch (error) {
+        console.log(error)
     }
 }

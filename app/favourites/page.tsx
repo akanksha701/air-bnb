@@ -1,14 +1,15 @@
 'use server';
 import React from 'react'
 import EmptyState from '../components/navbar/EmptyState';
-import getCurrentUser from '../actions/getCurrentUser';
 import { getFavouriteListings } from '../actions/getFavouriteListings';
 import FavouritesClient from './FavouritesClient';
+import getCurrentUser from '../actions/getCurrentUser';
+import { SafeListing } from '../types';
 
 const FavouritesPage = async () => {
     const currentUser = await getCurrentUser();
-    const listings: any = await getFavouriteListings();
-    if (listings.length === 0) {
+    const listings = await getFavouriteListings();
+    if (listings?.length === 0) {
         return (
             <EmptyState
                 title='No favourites found'
@@ -18,7 +19,7 @@ const FavouritesPage = async () => {
     }
     return (
         <FavouritesClient
-            listings={listings}
+            listings={listings as SafeListing[]}
             currentUser={currentUser}
         />
     )

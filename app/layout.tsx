@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import RegisterModal from "./components/modals/RegisterModal";
-import GlobalError from "./global-error";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import ToasterProvider from "./providers/ToasterProvider";
 import LoginModal from "./components/modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import Navbar from "./components/navbar/Navbar";
 import RentModal from "./components/modals/RentModal";
-import Categories from "./components/navbar/Categories";
 import SearchModal from "./components/modals/SearchModal";
 import { Nunito } from "next/font/google";
 

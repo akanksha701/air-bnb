@@ -40,7 +40,6 @@ const SearchModal: React.FC<SearchModalProps> = () => {
 
     const searchModal = useSearchModal();
     const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
-    const onBack = () => setStep((value) => value - 1);
     const onNext = () => setStep((value) => value + 1);
     const onSubmit = async () => {
         if (step !==STEPS.INFO) {
@@ -74,7 +73,6 @@ const SearchModal: React.FC<SearchModalProps> = () => {
     }
 
     const actionLabel = step === STEPS.INFO ? 'Search' : 'Next';
-    const secondaryActionLabel = step === STEPS.LOCATION ? undefined : 'Back';
 
     let bodyContent = (
         <div className='flex flex-col gap-8'>

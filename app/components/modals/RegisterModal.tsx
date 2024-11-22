@@ -11,10 +11,8 @@ import Buttons from "../navbar/Buttons";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import useLoginModal from "@/app/hooks/useLoginModal";
 const RegisterModal = () => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();

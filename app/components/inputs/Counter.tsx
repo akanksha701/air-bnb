@@ -1,6 +1,5 @@
 'use client'
 import React, { useCallback } from 'react'
-import Buttons from '../navbar/Buttons';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 interface CounterProps {

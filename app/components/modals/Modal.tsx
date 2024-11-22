@@ -1,7 +1,6 @@
 import React from 'react'
 import { IoMdClose } from 'react-icons/io';
 import Buttons from '../navbar/Buttons';
-import { FcGoogle } from 'react-icons/fc';
 
 interface ModalProps {
     isOpen: boolean;

@@ -4,7 +4,7 @@ import { BiSearch } from 'react-icons/bi'
 import useSearchModal from '@/app/hooks/useSearchModal';
 import { useSearchParams } from 'next/navigation';
 import useCountries from '@/app/hooks/useCountries';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 const Search = () => {
   const searchModal = useSearchModal();
   const params = useSearchParams();

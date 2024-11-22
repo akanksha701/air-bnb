@@ -1,7 +1,5 @@
 'use client'
 import React from 'react'
-import GlobalError from '../global-error'
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 const Container = ({children}: {children: React.ReactNode}) => {
   return (

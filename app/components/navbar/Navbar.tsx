@@ -6,7 +6,6 @@ import Search from './Search'
 import UserMenu from './Usermenu'
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import GlobalError from '@/app/global-error'
-import { User } from '@prisma/client'
 import { SafeUser } from '@/app/types'
 import Categories from './Categories'
 

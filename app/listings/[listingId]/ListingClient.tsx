@@ -7,7 +7,7 @@ import ListingHead from './ListingHead';
 import ListingInfo from './ListingInfo';
 import useLoginModal from '@/app/hooks/useLoginModal';
 import { useRouter } from 'next/navigation';
-import { differenceInCalendarDays, differenceInDays, eachDayOfInterval, endOfDay, set, startOfDay } from 'date-fns';
+import { differenceInCalendarDays, eachDayOfInterval, endOfDay, startOfDay } from 'date-fns';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import ListingReservation from './ListingReservation';
@@ -24,26 +24,28 @@ interface ListingClientProps {
     currentUser?: SafeUser | null;
     reservations?: SafeReservation[];
 }
-
+interface initialDateRange {
+    startDate: Date;
+    endDate: Date;
+    key: string;
+}
 const ListingClient = ({ listing, currentUser, reservations }: ListingClientProps) => {
     const loginModal = useLoginModal();
     const router = useRouter();
     const disabledDates = useMemo(() => {
         let dates: Date[] = [];
-        reservations?.forEach((reservation: any) => {
-            console.log(reservation,"reservation")
+        reservations?.forEach((reservation) => {
             const range = eachDayOfInterval({
-                start: startOfDay(reservation.startDate),
-                end: endOfDay(reservation.endDate),
+                start: startOfDay(new Date(reservation?.startDate)),
+                end: endOfDay(new Date(reservation?.endDate)),
             });
             dates = [...dates, ...range];
         });
-        console.log(dates,"dates")
         return dates;
     }, [reservations]);
     const [isLoading, setIsLoading] = useState(false);
     const [totalPrice, setTotalPrice] = useState(listing.price);
-    const [dateRange, setDateRange] = useState<any>(initialDateRange);
+    const [dateRange, setDateRange] = useState<initialDateRange>(initialDateRange);
 
     const onCreateReservation = useCallback(() => {
         if (!currentUser) {
@@ -105,7 +107,7 @@ console.log(disabledDates,"listing")
                             <ListingReservation
                                 price={listing.price}
                                 totalPrice={totalPrice}
-                                onChangeDate={(value) => setDateRange(value as Range)}
+                                onChangeDate={(value) => setDateRange(value as initialDateRange)}
                                 dateRange={dateRange}
                                 onSubmit={onCreateReservation}
                                 disabled={isLoading}

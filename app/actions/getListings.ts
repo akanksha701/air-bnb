@@ -1,5 +1,4 @@
 import { prisma } from "../libs/prismadb";
-import getCurrentUser from "./getCurrentUser";
 
 export interface IListingsParams {
   userId?: string;
