@@ -4,16 +4,22 @@ import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import { useCallback } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
+
 interface ImageUploadProps {
   onChange: (value: string) => void;
   value: string;
 }
-declare global {
-  let cloudinary:any;
+
+interface UploadResult {
+  info: {
+    secure_url: string; // URL of the uploaded image
+    // Add other properties from the result if needed
+  };
 }
+
 const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   const handleUpload = useCallback(
-    (result:any) => {
+    (result: UploadResult) => {
       onChange(result.info.secure_url);
     },
     [onChange]
@@ -22,7 +28,7 @@ const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   return (
     <>
       <CldUploadWidget
-        onSuccess={(result) => handleUpload(result)}
+        onSuccess={(result) => handleUpload(result as UploadResult)}
         uploadPreset="upload_images"
         options={{
           maxFiles: 1,

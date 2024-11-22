@@ -27,7 +27,7 @@ export async function getReservations(
             },
             orderBy: { createdAt: 'desc' }
         });
-        const safeReservations = reservations.map((reservation: any) => ({
+        const safeReservations = reservations.map((reservation) => ({
             ...reservation,
             createdAt: reservation?.createdAt?.toISOString(),
             startDate: reservation?.startDate?.toISOString(),

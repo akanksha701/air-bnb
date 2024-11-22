@@ -14,6 +14,7 @@ import Input from '../inputs/Input';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { IQuery } from '@/app/actions/getListings';
 
 enum STEPS {
     CATEGORY = 0,
@@ -69,7 +70,7 @@ const RentModal = () => {
         }
         return 'Back';
     }, [step]);
-    const setCustomValue = (id: string, value: string| number| undefined| null) => {
+    const setCustomValue = (id: string, value:IQuery) => {
         setValue(id, value, {
             shouldDirty: true,
             shouldTouch: true,
@@ -90,7 +91,7 @@ const RentModal = () => {
                             <CategoryInput
                                 icon={item.icon}
                                 label={item.label}
-                                onClick={(category) => setCustomValue('category', category)}
+                                onClick={(category) => setCustomValue('category', category as IQuery)}
                                 selected={category === item.label}
                             />
                         </div>
@@ -108,7 +109,7 @@ const RentModal = () => {
                 />
                 <CountrySelect
                     value={location}
-                    onChange={(value:any) => setCustomValue('location', value )}
+                    onChange={(value) => setCustomValue('location', value as IQuery )}
                 />
                 <Map center={location?.latlng} />
             </div>
@@ -124,21 +125,21 @@ const RentModal = () => {
                 title='Number of guests'
                 subtitle='How many guests?'
                 value={guestCount}
-                onChange={(value) => setCustomValue('guestCount', value)}
+                onChange={(value) => setCustomValue('guestCount', value as IQuery)}
             />
             <hr />
             <Counter
                 title='Number of rooms'
                 subtitle='How many rooms?'
                 value={roomCount}
-                onChange={(value) => setCustomValue('roomCount', value)}
+                onChange={(value) => setCustomValue('roomCount', value as IQuery)}
             />
             <hr />
             <Counter
                 title='Number of bathrooms'
                 subtitle='How many bathrooms?'
                 value={bathroomCount}
-                onChange={(value) => setCustomValue('bathroomCount', value)}
+                onChange={(value) => setCustomValue('bathroomCount', value as IQuery)}
             />
         </div>)
     }
@@ -146,7 +147,7 @@ const RentModal = () => {
         bodyContent = (<div className='flex flex-col gap-8'>
             <Heading title='Add a photo of your place' subtitle='Show guests what your place looks like!' />
             <ImageUpload
-                onChange={(value) => setCustomValue('imageSrc', value)}
+                onChange={(value) => setCustomValue('imageSrc', value as IQuery)}
                 value={imageSrc}
             />
         </div>)
@@ -207,6 +208,7 @@ const RentModal = () => {
                 rentModal.onClose();
             })
             .catch((error) => {
+                console.log(error)
                 toast.error('Something went wrong');
             })
             .finally(() => {

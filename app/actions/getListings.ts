@@ -10,10 +10,31 @@ export interface IListingsParams {
   locationValue?: string;
   category?: string;
 }
+export interface IQuery {
+  userId?: string;
+  category?: string;
+  guestCount?: {
+    gte: number;
+  };
+  roomCount?: {
+    gte: number;
+  };
+  bathroomCount?: {
+    gte: number;
+  };
+  locationValue?: string;
+  NOT?: {
+    reservations: {
+      some: {
+        OR: Array<{ startDate: string; endDate: string } | { startDate: { lte: string }; endDate: { gte: string } }>;
+      };
+    };
+  };
+}
 export default async function getListings(params: IListingsParams) {
   try {
     const { userId, guestCount, roomCount, bathroomCount, startDate, endDate, locationValue, category } = params;
-    const query:any = {};
+    const query: IQuery = {};
     if (userId) {
       query.userId = userId;
     }
@@ -61,7 +82,7 @@ export default async function getListings(params: IListingsParams) {
       createdAt: listing.createdAt.toISOString()
     }));
     return safeListings;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+  console.log(error)
   }
 }

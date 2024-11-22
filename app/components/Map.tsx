@@ -8,7 +8,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // Set up icons
 
-//@ts-ignore
+//@ts-expect-error @typescript-eslint/ban-ts-comment
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: markerIcon.src,

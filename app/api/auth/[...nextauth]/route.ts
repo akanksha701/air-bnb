@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
     error: '/auth/error',
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       try {
         if (account?.provider === "github" || account?.provider === "google") {
           if (!user?.email) {
@@ -103,7 +103,7 @@ export const authOptions: AuthOptions = {
         return false;
       }
     },
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
       }

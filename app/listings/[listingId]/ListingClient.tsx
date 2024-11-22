@@ -76,7 +76,7 @@ const ListingClient = ({ listing, currentUser, reservations }: ListingClientProp
             }
         }
     }, [DateRange, listing.price]);
-    const category: any = useMemo(() => {
+    const category = useMemo(() => {
         return categories.find((item) => item.label === listing.category);
     }, [listing.category]);
 

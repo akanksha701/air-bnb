@@ -24,6 +24,16 @@ enum STEPS {
     INFO = 2,
 }
 
+interface UpdatedQuery {
+    locationValue?: string;
+    guestCount?: number;
+    roomCount?: number;
+    bathroomCount?: number;
+    startDate?: string;
+    endDate?: string;
+    [key: string]: string | number | null | undefined;
+}
+
 const SearchModal: React.FC<SearchModalProps> = () => {
     const router = useRouter();
     const params = useSearchParams();
@@ -39,7 +49,7 @@ const SearchModal: React.FC<SearchModalProps> = () => {
     });
 
     const searchModal = useSearchModal();
-    const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), [location]);
+    const Map = useMemo(() => dynamic(() => import('../Map'), { ssr: false }), []);
     const onNext = () => setStep((value) => value + 1);
     const onSubmit = async () => {
         if (step !==STEPS.INFO) {
@@ -49,7 +59,7 @@ const SearchModal: React.FC<SearchModalProps> = () => {
         if (params) {
             currentQuery = qs.parse(params.toString());
         }
-        const updatedQuery:any = {
+        const updatedQuery: UpdatedQuery = {
             ...currentQuery,
             locationValue: location?.value,
             guestCount,
