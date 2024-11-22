@@ -9,11 +9,11 @@ interface ImageUploadProps {
   value: string;
 }
 declare global {
-  var cloudinary: any;
+  let cloudinary:any;
 }
 const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   const handleUpload = useCallback(
-    (result: any) => {
+    (result:any) => {
       onChange(result.info.secure_url);
     },
     [onChange]

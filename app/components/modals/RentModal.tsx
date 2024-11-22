@@ -69,7 +69,7 @@ const RentModal = () => {
         }
         return 'Back';
     }, [step]);
-    const setCustomValue = (id: string, value: any) => {
+    const setCustomValue = (id: string, value: string| number| undefined| null) => {
         setValue(id, value, {
             shouldDirty: true,
             shouldTouch: true,
@@ -108,7 +108,7 @@ const RentModal = () => {
                 />
                 <CountrySelect
                     value={location}
-                    onChange={(value) => setCustomValue('location', value)}
+                    onChange={(value:any) => setCustomValue('location', value )}
                 />
                 <Map center={location?.latlng} />
             </div>

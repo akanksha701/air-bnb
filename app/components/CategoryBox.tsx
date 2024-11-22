@@ -12,7 +12,7 @@ interface CategoryBoxProps {
 }
 
 const CategoryBox = (props: CategoryBoxProps) => {
-    const { label, icon: Icon, selected, description } = props
+    const { label, icon: Icon, selected } = props
     const router = useRouter();
     const params = useSearchParams();
     const handleClick = () => {

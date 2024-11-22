@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
     error: '/auth/error',
   },
   callbacks: {
-    async signIn({ user, account, profile }:any) {
+    async signIn({ user, account, profile }) {
       try {
         if (account?.provider === "github" || account?.provider === "google") {
           if (!user?.email) {
@@ -73,9 +73,9 @@ export const authOptions: AuthOptions = {
             }
   
             const newUser = await prisma.user.create({
-              data: <any>{
+              data: {
                 email: user.email,
-                name: user.name || profile?.login || user.email.split('@')[0],
+                name: user.name   || user.email.split('@')[0],
                 image: user.image || null,
                 emailVerified: new Date(),
               },

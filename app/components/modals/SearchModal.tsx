@@ -49,17 +49,17 @@ const SearchModal: React.FC<SearchModalProps> = () => {
         if (params) {
             currentQuery = qs.parse(params.toString());
         }
-        const updatedQuery: any = {
+        const updatedQuery:any = {
             ...currentQuery,
             locationValue: location?.value,
             guestCount,
             roomCount,
             bathroomCount,
         }
-        if (dateRange.startDate) {
+        if (dateRange?.startDate ) {
             updatedQuery.startDate = formatISO(dateRange.startDate);
         }
-        if (dateRange.endDate) {
+        if (dateRange?.endDate) {
             updatedQuery.endDate = formatISO(dateRange.endDate);
         }
         const url = qs.stringifyUrl({
