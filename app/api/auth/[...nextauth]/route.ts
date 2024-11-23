@@ -1,12 +1,15 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
+import CredentialsProvider, { CredentialsConfig } from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { Account, User } from "next-auth";
 import { prisma } from "@/app/libs/prismadb";
+import { OAuthConfig } from "next-auth/providers/oauth";
 
-export const authOptions: AuthOptions = {
+
+// Define the AuthOptions interface
+const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -14,11 +17,20 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
     GoogleProvider({
-        allowDangerousEmailAccountLinking: true, 
+      allowDangerousEmailAccountLinking: true,
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      profile: (profile) => {
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+        };
+      },
     }),
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -52,75 +64,39 @@ export const authOptions: AuthOptions = {
     error: '/auth/error',
   },
   callbacks: {
-    async signIn({ user, account }) {
-      try {
-        if (account?.provider === "github" || account?.provider === "google") {
-          if (!user?.email) {
-            console.error("No email provided from OAuth provider");
-            return false;
-          }
-          
-          // Check if user exists
-          const existingUser = await prisma.user.findUnique({
-            where: { email: user.email },
-          });
-  
-          if (!existingUser) {
-            // Ensure all required fields are present
-            if (!user.email || !account.providerAccountId) {
-              console.error("Missing required fields for user creation");
-              return false;
-            }
-  
-            const newUser = await prisma.user.create({
-              data: {
-                email: user.email,
-                name: user.name   || user.email.split('@')[0],
-                image: user.image || null,
-                emailVerified: new Date(),
-              },
-            });
-            if (account.provider && account.type) {
-              await prisma.account.create({
-                data: {
-                  userId: newUser.id,
-                  type: account.type,
-                  provider: account.provider,
-                  providerAccountId: account.providerAccountId,
-                  access_token: account.access_token || null,
-                  token_type: account.token_type || null,
-                  scope: account.scope || null,
-                  id_token: account.id_token || null,
-                  expires_at: account.expires_at || null,
-                },
-              });
-            }
-          }
-        }
-        return true;
-      } catch (error) {
-        console.error("Sign in error:", error);
+    async signIn({ user }: { user: User; account: Account | null }) {
+      // Ensure user has an ID
+      if (!user.id) {
+        console.error("User ID is missing");
         return false;
       }
+      return true;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account }:{token:{ id:string,accessToken:string}; user: User; account: {access_token:string} }) {
       if (user) {
-        token.id = user.id
+        token.id = user.id;
       }
       if (account) {
-        token.accessToken = account.access_token
+        token.accessToken = account.access_token;
       }
-      return token
-    }
+      return token;
+    },
   },
   debug: process.env.NODE_ENV === "development",
-  
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST }; 
+interface AuthOptions{
+  providers: (OAuthConfig<GithubProfile> | OAuthConfig<GoogleProfile> | CredentialsConfig<{
+    email: {
+        label: string;
+        type: string;
+    };
+}>)[];
+secret: string | undefined;
+}
+// Export the NextAuth handler as the default export
+const handler = NextAuth(authOptions as AuthOptions);
+export { handler as GET, handler as POST };
